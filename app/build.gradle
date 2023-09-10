@@ -16,7 +16,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        testApplicationId "com.project.practical.notekeeper"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -34,10 +34,13 @@ android {
         }
     }
     sourceSets {
-        androidTest.java.srcDirs += "src/test-common/java"
-        test.java.srcDirs += "src/test-common/java"
+        androidTest {
+            java.srcDirs += "src/androidTestmain/java"
+        }
+        test {
+            java.srcDirs += "src/androidTestmain/java"
+        }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
