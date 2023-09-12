@@ -33,14 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets {
-        androidTest {
-            java.srcDirs += "src/androidTestmain/java"
-        }
-        test {
-            java.srcDirs += "src/androidTestmain/java"
-        }
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
