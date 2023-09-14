@@ -1,5 +1,6 @@
 package com.project.practical.notekeeper.di;
 
+import com.project.practical.notekeeper.ui.note.NoteActivity;
 import com.project.practical.notekeeper.ui.note_list.NotesListActivity;
 
 import dagger.Module;
@@ -10,5 +11,8 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract NotesListActivity contributeNoteListActivity();
+
+    @ContributesAndroidInjector
+    abstract NoteActivity contributeNoteActivity();
 
 }

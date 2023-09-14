@@ -3,6 +3,9 @@ package com.project.practical.notekeeper.repository;
 
 import static com.project.practical.notekeeper.repository.NoteRepository.INSERT_FAILURE;
 import static com.project.practical.notekeeper.repository.NoteRepository.INSERT_SUCCESS;
+import static com.project.practical.notekeeper.repository.NoteRepository.NOTE_TITLE_NULL;
+import static com.project.practical.notekeeper.repository.NoteRepository.UPDATE_FAILURE;
+import static com.project.practical.notekeeper.repository.NoteRepository.UPDATE_SUCCESS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,6 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.Mockito;
 
 import io.reactivex.Single;
 import kotlin.Unit;
@@ -99,12 +103,43 @@ public class NoteRepositoryTest {
 
     }
 
-   /* assertThrows(Exception.class , new Executable(){
-        @Override
-        public void execute() throws Throwable {
-            final Note note=new Note(TestUtil.TEST_NOTE_1);
-            note.setTitle(null);
-            noteRepository.insertNote(note);
-        }
-    });*/
+    @Test
+    void updateNote_ReturnNumRowsUpdated() throws Exception {
+        final int updateRow=1;
+        when(noteDao.updateNote(any(Note.class))).thenReturn(Single.just(updateRow));
+
+        final Resource<Integer> returnedValue=noteRepository.updateNote(note1).blockingFirst();
+
+
+        assertEquals(Resource.success(updateRow,UPDATE_SUCCESS),returnedValue);
+    }
+
+
+    @Test
+    void updateNote_ReturnFailure() throws Exception {
+        final int failedInsert=-1;
+        when(noteDao.updateNote(any(Note.class))).thenReturn(Single.just(failedInsert));
+
+        final Resource<Integer> returnedValue=noteRepository.updateNote(note1).blockingFirst();
+
+
+        assertEquals(Resource.error(null,UPDATE_FAILURE),returnedValue);
+    }
+
+    @Test
+    void updateNote_nullTitle_throwExeption() throws Exception {
+       Exception exception= assertThrows(Exception.class , new Executable() {
+
+            @Override
+            public void execute() throws Throwable {
+                final Note note=new Note(TestUtil.TEST_NOTE_1);
+                note.setTitle(null);
+                noteRepository.updateNote(note);
+            }
+        } );
+       assertEquals(NOTE_TITLE_NULL,exception.getMessage());
+
+    }
+
+
 }
